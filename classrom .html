@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🏆 ClassFund 3D Online - สายธารวิทยา ม.2/1 (Full System)</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body style="font-family: 'Kanit', sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); background-attachment: fixed; color: #0f172a; padding-bottom: 60px;">
+
+
+
+<style>
+
+.glass-panel {
+
+background: rgba(255, 255, 255, 0.9);
+
+backdrop-filter: blur(10px);
+
+-webkit-backdrop-filter: blur(10px);
+
+border: 1px solid rgba(148, 163, 184, 0.25);
+
+border-radius: 24px;
+
+box-shadow: 0 15px 35px rgba(30, 58, 138, 0.08);
+
+transition: all 0.3s ease;
+
+margin-bottom: 25px;
+
+}
+
+.glass-panel:hover { transform: translateY(-4px); box-shadow: 0 25px 45px rgba(30, 58, 138, 0.12); }
+
+.stat-card-3d {
+
+padding: 24px; border-radius: 20px; background: #ffffff;
+
+box-shadow: inset 2px 2px 6px rgba(0,0,0,0.03), 4px 4px 12px rgba(30, 58, 138, 0.03);
+
+text-align: center; position: relative; overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.8);
+
+}
+
+.stat-card-3d::before { content: ''; position: absolute; top:0; left:0; width:100%; height:5px; }
+
+.stat-primary::before { background: linear-gradient(to right, #1e3a8a, #0ea5e9); }
+
+.stat-success::before { background: linear-gradient(to right, #10b981, #0ea5e9); }
+
+.stat-danger::before { background: linear-gradient(to right, #ef4444, #f43f5e); }
+
+.form-control-cyber { background: #ffffff !important; border: 1px solid #cbd5e1 !important; border-radius: 14px; padding: 12px 18px; color: #0f172a !important; }
+
+.form-control-cyber:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 12px rgba(14, 165, 233, 0.2); outline: none; }
+
+.btn-cyber-primary { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); border: none; border-radius: 12px; color: white; font-weight: 600; padding: 10px 20px; }
+
+.btn-cyber-success { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); border: none; border-radius: 12px; color: white; font-weight: 600; }
+
+.btn-cyber-danger { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); border: none; border-radius: 12px; color: white; font-weight: 600; }
+
+.list-group-item-cyber { background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); margin-bottom: 8px; border-radius: 14px !important; transition: all 0.2s ease; }
+
+.list-group-item-cyber:hover { background: rgba(14, 165, 233, 0.03); border-color: #0ea5e9; }
+
+</style>
+
+
+
+<div class="container py-4">
+
+<div class="glass-panel p-4">
+
+<div class="row align-items-center">
+
+<div class="col-lg-7 text-center text-lg-start">
+
+<h1 class="fw-extrabold mb-1" style="background: linear-gradient(to right, #1e3a8a, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+
+<i class="fa-solid fa-cloud text-info me-2"></i><span id="displaySchool">โรงเรียนสายธารวิทยา</span>
+
+</h1>
+
+<h4 class="text-muted mb-0">
+
+<i class="fa-solid fa-graduation-cap me-2" style="color: #1e3a8a;"></i>ห้องเรียน <span id="displayRoom" class="fw-bold text-info">ม.2/1</span>
+
+| <small class="small text-dark fw-medium">หัวหน้า: <span id="lblLeader">-</span> / รองฯ: <span id="lblSubLeader">-</span></small>
+
+</h4>
+
+</div>
+
+<div class="col-lg-5 text-center text-lg-end mt-3 mt-lg-0 d-flex gap-2 justify-content-center justify-content-lg-end">
+
+<span class="badge bg-danger d-flex align-items-center px-3" id="lockBadge" style="border-radius:30px; font-weight:600; font-size:0.85rem;">
+
+<i class="fa-solid fa-lock me-1"></i> โหมดสิทธิ์จำกัด
+
+</span>
+
+<button class="btn btn-cyber-primary" id="authBtn">
+
+<i class="fa-solid fa-user-shield me-1"></i> ยืนยันสิทธิ์หัวหน้าห้อง
+
+</button>
+
+<button class="btn btn-outline-secondary rounded-3 px-3" data-bs-toggle="modal" data-bs-target="#configModal" id="configBtn" disabled>
+
+<i class="fa-solid fa-sliders"></i>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="row g-4 mb-4">
+
+<div class="col-md-4"><div class="glass-panel p-3"><div class="stat-card-3d stat-primary"><h6 class="text-muted mb-2 fw-bold">ยอดเงินคงเหลือห้อง</h6><h2 class="fw-black mb-0" id="totalBalance" style="color: #1e3a8a; font-size:2.3rem;">0.00 ฿</h2></div></div></div>
+
+<div class="col-md-4"><div class="glass-panel p-3"><div class="stat-card-3d stat-success"><h6 class="text-muted mb-2 fw-bold">รายรับสะสมทั้งหมด</h6><h2 class="fw-bold mb-0" id="totalIncome" style="color: #10b981; font-size:2.3rem;">0.00 ฿</h2></div></div></div>
+
+<div class="col-md-4"><div class="glass-panel p-3"><div class="stat-card-3d stat-danger"><h6 class="text-muted mb-2 fw-bold">รายจ่ายรวมทั้งหมด</h6><h2 class="fw-bold text-danger mb-0" id="totalExpense" style="font-size:2.3rem;">0.00 ฿</h2></div></div></div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="col-xl-5">
+
+<div class="glass-panel p-4">
+
+<h5 class="fw-bold mb-3" style="color: #1e3a8a;"><i class="fa-solid fa-chart-bar me-2"></i>แผนภูมิสัดส่วน รับ VS จ่าย</h5>
+
+<div style="position: relative; height:200px; width:100%"><canvas id="financeChart"></canvas></div>
+
+</div>
+
+
+
+<div class="glass-panel p-4" id="transactionFormCard">
+
+<h5 class="fw-bold mb-3" style="color: #1e3a8a;"><i class="fa-solid fa-cash-register me-2 text-info"></i>บันทึกธุรกรรมการเงิน</h5>
+
+<div class="mb-3">
+
+<label class="form-label small text-muted fw-bold">ประเภทธุรกรรม (ถอนเงินไม่ต้องใช้ PIN)</label>
+
+<div class="d-flex gap-2">
+
+<button type="button" class="btn btn-cyber-success w-100 py-2 active" id="typeIncomeBtn">รายรับ (เก็บเงินเข้า)</button>
+
+<button type="button" class="btn btn-secondary w-100 py-2" id="typeExpenseBtn" style="background:#cbd5e1; border:none; color:#334155;">รายจ่าย (ถอนเงินออก)</button>
+
+</div>
+
+</div>
+
+<div id="weeklyHelperSection" class="mb-3 p-3 rounded" style="background:rgba(14, 165, 233, 0.05); border:1px dashed #0ea5e9; border-radius:14px;">
+
+<span class="small fw-bold d-block mb-2 text-center text-primary">💰 โหมดคำนวณเงินห้องรายสัปดาห์</span>
+
+<button type="button" class="btn btn-sm btn-cyber-primary w-100" id="calcWeeklyBtn" disabled>คิดสัปดาห์ละ 5 บาท (คูณตามจำนวนคน)</button>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label small text-muted fw-bold">จำนวนเงินรวม (บาท)</label>
+
+<input type="number" id="transAmount" class="form-control form-control-cyber" placeholder="0.00" disabled>
+
+<small class="text-primary mt-1 d-block fw-bold" id="amountCalcHint"></small>
+
+</div>
+
+<div id="incomeSection">
+
+<div class="mb-3">
+
+<div class="d-flex justify-content-between mb-2">
+
+<label class="small text-muted fw-bold">เลือกรายชื่อเพื่อนที่จ่ายเงินแล้ว</label>
+
+<div class="btn-group btn-group-sm">
+
+<button type="button" class="btn btn-outline-primary btn-xs py-0 px-2" style="font-size:0.75rem" id="selectAllCheckboxesBtn" disabled>ทั้งหมด</button>
+
+<button type="button" class="btn btn-outline-secondary btn-xs py-0 px-2" style="font-size:0.75rem" id="clearAllCheckboxesBtn" disabled>ล้าง</button>
+
+</div>
+
+</div>
+
+<div id="whoPaidCheckboxes" class="p-3 rounded border text-dark" style="background:#f8fafc; max-height:160px; overflow-y:auto;"></div>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label small text-muted fw-bold">ผู้รับยอดเงิน / คนบันทึก</label>
+
+<input type="text" id="recipientName" class="form-control form-control-cyber" placeholder="ชื่อหัวหน้าห้อง / รองหัวหน้าห้อง" disabled>
+
+</div>
+
+</div>
+
+<div id="expenseSection" style="display:none;">
+
+<div class="mb-3">
+
+<label class="form-label small text-danger fw-bold">ระบุชื่อผู้เบิกถอนเงิน *</label>
+
+<input type="text" id="withdrawerName" class="form-control form-control-cyber" placeholder="ระบุชื่อคนเบิกถอน">
+
+</div>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label small text-muted fw-bold">หมายเหตุ / รายละเอียดรายการ *</label>
+
+<textarea id="transNote" class="form-control form-control-cyber" rows="2" placeholder="ระบุเหตุผลการเก็บ/ใช้จ่ายเงิน" disabled></textarea>
+
+</div>
+
+<button class="btn btn-cyber-primary w-100 py-3" id="saveTransactionBtn" disabled><i class="fa-solid fa-circle-check me-2"></i>บันทึกรายการลงกองกลางออนไลน์</button>
+
+</div>
+
+
+
+<div class="glass-panel p-4">
+
+<h5 class="fw-bold mb-1" style="color: #1e3a8a;"><i class="fa-solid fa-users text-primary me-2"></i>รายชื่อเพื่อนร่วมห้อง ม.2/1</h5>
+
+<p class="text-muted small mb-3">คลิกปุ่มดินสอเพื่อแก้ไขชื่อเพื่อน หรือคลิกที่ชื่อเพื่อดูประวัติเงินส่วนบุคคล</p>
+
+<div class="input-group mb-3">
+
+<input type="text" id="studentNameInput" class="form-control form-control-cyber" placeholder="เพิ่มรายชื่อเพื่อนใหม่..." disabled>
+
+<button class="btn btn-cyber-primary ms-2" type="button" id="addStudentBtn" disabled><i class="fa-solid fa-plus"></i></button>
+
+</div>
+
+<div style="max-height: 250px; overflow-y: auto;" id="studentListContainer" class="pe-1"></div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-xl-7">
+
+<div class="glass-panel p-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<h5 class="fw-bold mb-0" style="color: #1e3a8a;"><i class="fa-solid fa-receipt me-2 text-info"></i>สมุดบัญชีกองกลางห้อง</h5>
+
+<button class="btn btn-sm btn-outline-danger border-0" id="clearAllTransBtn" disabled><i class="fa-solid fa-trash-can"></i> ล้างบัญชี</button>
+
+</div>
+
+<div style="max-height: 420px; overflow-y: auto;" id="transactionHistoryList" class="pe-1"></div>
+
+</div>
+
+
+
+<div class="glass-panel p-4">
+
+<h5 class="fw-bold mb-2" style="color: #1e3a8a;"><i class="fa-solid fa-square-poll-horizontal text-success me-2"></i>สรุปสถานะการชำระเงินบิลล่าสุด</h5>
+
+<p class="text-muted small" id="latestReceiptLabel">ยังไม่มีข้อมูลการเก็บเงิน</p>
+
+<div class="row">
+
+<div class="col-md-6 mb-3"><h6 class="fw-bold text-success"><i class="fa-solid fa-circle-check me-2"></i>จ่ายเงินเรียบร้อยแล้ว</h6><ul class="list-group" id="paidStatusList" style="max-height:220px; overflow-y:auto;"></ul></div>
+
+<div class="col-md-6 mb-3"><h6 class="fw-bold text-danger"><i class="fa-solid fa-circle-xmark me-2"></i>ยังค้างชำระเงิน</h6><ul class="list-group" id="unpaidStatusList" style="max-height:220px; overflow-y:auto;"></ul></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="modal fade" id="configModal" tabindex="-1" aria-hidden="true">
+
+<div class="modal-dialog modal-dialog-centered">
+
+<div class="modal-content" style="border-radius:24px; background:#ffffff;">
+
+<div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold" style="color:#1e3a8a;"><i class="fa-solid fa-sliders me-2"></i>แก้ไขข้อมูลส่วนกลางห้องเรียน</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+
+<div class="modal-body text-dark">
+
+<div class="mb-3"><label class="small fw-bold text-muted">ชื่อโรงเรียน</label><input type="text" id="schoolInput" class="form-control form-control-cyber"></div>
+
+<div class="mb-3"><label class="small text-muted fw-bold">ระดับชั้น / ห้องเรียน</label><input type="text" id="roomInput" class="form-control form-control-cyber"></div>
+
+<div class="mb-3"><label class="small text-muted fw-bold">ชื่อหัวหน้าห้อง</label><input type="text" id="leaderInput" class="form-control form-control-cyber"></div>
+
+<div class="mb-3"><label class="small text-muted fw-bold">ชื่อรองหัวหน้าห้อง</label><input type="text" id="subLeaderInput" class="form-control form-control-cyber"></div>
+
+<div class="mb-3"><label class="small text-danger fw-bold">รหัสผ่าน PIN 4 หลักคุมคลังห้อง</label><input type="password" id="pinInput" class="form-control form-control-cyber" maxlength="4"></div>
+
+</div>
+
+<div class="modal-footer border-0 pt-0"><button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">ยกเลิก</button><button type="button" class="btn btn-cyber-primary px-4" id="saveConfigBtn">บันทึกข้อมูล</button></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+
+
+// 🌐 ผูกเข้ากับฐานข้อมูล Firebase เรียบร้อยเรียลไทม์ฉลุย
+
+const firebaseConfig = {
+
+databaseURL: "https://saithan-classfund-default-rtdb.asia-southeast1.firebasedatabase.app/"
+
+};
+
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+
+
+let appData = {
+
+schoolName: "โรงเรียนสายธารวิทยา",
+
+roomName: "ม.2/1",
+
+leaderName: "วรินทร มนต์ถคาถา",
+
+subLeaderName: "กัญญาณัฐ บุญสาลี",
+
+treasurerPIN: "0412",
+
+students: [
+
+"05377 เด็กชายชนะพล บุญศักดิ์", "05378 เด็กชายณัฐพงศ์ บุญชู", "05379 เด็กชายธณัญวิศ ศรีจันทร์",
+
+"05380 เด็กชายธัญเทพ เวียงคำ", "05381 เด็กชายพีรศักดิ์ กรมเมือง", "05382 เด็กชายภูตะวัน ใจมั่น",
+
+"05383 เด็กชายเมธาวี สุระนาถ", "05384 เด็กชายวชิรวิทย์ พวงวิไล", "05385 เด็กชายวรินทร มนต์ถคาถา",
+
+"05386 เด็กชายวรินทร พวงจำปา", "05387 เด็กชายวิศรุต เพชรนาม", "05388 เด็กหญิงกัญญาณัฐ บุญสาลี",
+
+"05389 เด็กหญิงกัญญารัตน์ บัวหลาย", "05390 เด็กหญิงกานต์ธิดา ใจมั่น", "05391 เด็กหญิงกานต์ธิดา วันศุกร์",
+
+"05393 เด็กหญิงชาลินี หล่อหลอม", "05394 เด็กหญิงณัฐสุดา วิยาสิงห์", "05395 เด็กหญิงธัญกมล สมพงษ์",
+
+"05396 เด็กหญิงปรียาพร ศรศรี", "05397 เด็กหญิงปุณยนุช เครือคุณ", "05398 เด็กหญิงพนิตา อารมย์",
+
+"05399 เด็กหญิงพรพิมล ชาวทะเล", "05400 เด็กหญิงภัณฑิรา พันธนู", "05401 เด็กหญิงศิรดา สุดจริง",
+
+"05402 เด็กหญิงสุรินทร์ดา มูลกิจ", "05403 เด็กหญิงอนัญญา จันทร์ทง"
+
+],
+
+transactions: []
+
+};
+
+
+
+let isAuthorized = false;
+
+let currentType = "income";
+
+let activeFilter = "all";
+
+let myChart = null;
+
+
+
+const dataRef = ref(db, 'saithan_fund_cloud');
+
+
+// ดึงข้อมูลเรียลไทม์ออนไลน์จากคลาวด์
+
+onValue(dataRef, (snapshot) => {
+
+const data = snapshot.val();
+
+if (data) {
+
+appData = data;
+
+if(!appData.transactions) appData.transactions = [];
+
+if(!appData.students) appData.students = [];
+
+} else {
+
+set(dataRef, appData);
+
+}
+
+init();
+
+});
+
+
+
+function uploadToServer() {
+
+set(dataRef, appData);
+
+}
+
+
+
+window.applyWeeklyRate = function() {
+
+if(currentType !== "income") return;
+
+const count = document.querySelectorAll(".student-checkbox:checked").length;
+
+document.getElementById("transAmount").value = count * 5;
+
+document.getElementById("amountCalcHint").innerText = `⚡ ระบบคำนวณ: 5 บาท × เลือกไว้ ${count} คน = ยอดรวม ${count * 5} บาท`;
+
+};
+
+
+
+window.toggleAllCheckboxes = function(status) {
+
+document.querySelectorAll(".student-checkbox").forEach(box => box.checked = status);
+
+if(isAuthorized) applyWeeklyRate();
+
+};
+
+
+
+window.setFilter = function(filterVal) {
+
+activeFilter = filterVal;
+
+document.getElementById("filterAllBtn").className = filterVal === 'all' ? "btn btn-sm btn-secondary w-100 active" : "btn btn-sm btn-outline-secondary w-100";
+
+document.getElementById("filterIncBtn").className = filterVal === 'income' ? "btn btn-sm btn-primary w-100 text-white active" : "btn btn-sm btn-outline-primary w-100";
+
+document.getElementById("filterExpBtn").className = filterVal === 'expense' ? "btn btn-sm btn-danger w-100 text-white active" : "btn btn-sm btn-outline-danger w-100";
+
+renderTransactions();
+
+};
+
+
+
+function toggleAuth() {
+
+if (isAuthorized) {
+
+isAuthorized = false; updateAccessUI(); renderStudentsAndLists();
+
+alert("ล็อกเอาต์ออกจากระบบเรียบร้อย");
+
+} else {
+
+const inputPIN = prompt("กรอกรหัสผ่าน PIN 4 หลักของหัวหน้า/รองหัวหน้าห้อง (รหัสเริ่มต้นคือ 1234):");
+
+if (inputPIN === appData.treasurerPIN) {
+
+isAuthorized = true; updateAccessUI(); renderStudentsAndLists();
+
+alert("🔓 ยืนยันสิทธิ์สำเร็จ! ทุกปุ่มบนระบบออนไลน์พร้อมให้คุณสั่งการแล้ว");
+
+} else if (inputPIN !== null) alert("❌ รหัส PIN ไม่ถูกต้อง!");
+
+}
+
+}
+
+document.getElementById("authBtn").addEventListener("click", toggleAuth);
+
+
+
+function updateAccessUI() {
+
+const lockBadge = document.getElementById("lockBadge");
+
+const authBtn = document.getElementById("authBtn");
+
+
+document.getElementById("studentNameInput").disabled = !isAuthorized;
+
+document.getElementById("addStudentBtn").disabled = !isAuthorized;
+
+document.getElementById("clearAllTransBtn").disabled = !isAuthorized;
+
+document.getElementById("configBtn").disabled = !isAuthorized;
+
+
+
+if (isAuthorized) {
+
+lockBadge.className = "badge bg-success px-3"; lockBadge.innerHTML = `<i class="fa-solid fa-unlock-keyhole me-1"></i> สิทธิ์หัวหน้า/รองฯ เปิดใช้งาน`;
+
+authBtn.innerHTML = `<i class="fa-solid fa-lock-open me-1"></i> ล็อกเอาต์`; authBtn.className = "btn btn-danger btn-cyber-danger";
+
+} else {
+
+lockBadge.className = "badge bg-danger px-3"; lockBadge.innerHTML = `<i class="fa-solid fa-lock me-1"></i> โหมดสิทธิ์จำกัด (ถอนเงินเสรี)`;
+
+authBtn.innerHTML = `<i class="fa-solid fa-user-shield me-1"></i> ยืนยันสิทธิ์หัวหน้าห้อง`; authBtn.className = "btn btn-cyber-primary";
+
+}
+
+switchFormElementsVisibility();
+
+}
+
+
+
+function switchFormElementsVisibility() {
+
+const isInc = currentType === "income";
+
+document.getElementById("transAmount").disabled = (isInc && !isAuthorized);
+
+document.getElementById("transNote").disabled = (isInc && !isAuthorized);
+
+document.getElementById("recipientName").disabled = (isInc && !isAuthorized);
+
+document.getElementById("calcWeeklyBtn").disabled = (isInc && !isAuthorized);
+
+document.getElementById("selectAllCheckboxesBtn").disabled = (isInc && !isAuthorized);
+
+document.getElementById("clearAllCheckboxesBtn").disabled = (isInc && !isAuthorized);
+
+document.getElementById("saveTransactionBtn").disabled = (isInc && !isAuthorized);
+
+document.querySelectorAll(".student-checkbox").forEach(box => box.disabled = (isInc && !isAuthorized));
+
+
+if(!isInc) {
+
+document.getElementById("transAmount").disabled = false;
+
+document.getElementById("transNote").disabled = false;
+
+document.getElementById("withdrawerName").disabled = false;
+
+document.getElementById("saveTransactionBtn").disabled = false;
+
+}
+
+}
+
+
+
+window.editStudentName = function(index) {
+
+if (!isAuthorized) return alert("กรุณายืนยัน PIN ผู้ดูแลห้องก่อนแก้ไขรายชื่อเพื่อน!");
+
+const oldName = appData.students[index];
+
+const newName = prompt(`✏️ แก้ไขชื่อเพื่อนคนที่ ${index + 1}:\nเดิม: ${oldName}`, oldName);
+
+if (newName && newName.trim() !== "") {
+
+const trimmed = newName.trim();
+
+appData.transactions.forEach(t => {
+
+if(t.paidStudents) {
+
+const idx = t.paidStudents.indexOf(oldName);
+
+if(idx !== -1) t.paidStudents[idx] = trimmed;
+
+}
+
+});
+
+appData.students[index] = trimmed;
+
+uploadToServer();
+
+alert("แก้ไขชื่อสำเร็จ ข้อมูลซิงค์ออนไลน์แล้ว!");
+
+}
+
+};
+
+
+
+window.deleteStudent = function(index) {
+
+if(confirm("ต้องการคัดชื่อเพื่อนคนนี้ออกใช่หรือไม่?")) {
+
+appData.students.splice(index, 1);
+
+uploadToServer();
+
+}
+
+};
+
+
+
+window.deleteTransaction = function(id) {
+
+if(confirm("ลบรายการบัญชีนี้ใช่หรือไม่?")) {
+
+appData.transactions = appData.transactions.filter(t => t.id !== id);
+
+uploadToServer();
+
+}
+
+};
+
+
+
+document.getElementById("typeIncomeBtn").addEventListener("click", () => {
+
+currentType = "income"; document.getElementById("typeIncomeBtn").className = "btn btn-cyber-success w-100 py-2 active";
+
+document.getElementById("typeExpenseBtn").className = "btn btn-secondary w-100 py-2"; document.getElementById("typeExpenseBtn").style = "background:#cbd5e1; border:none; color:#334155;";
+
+document.getElementById("incomeSection").style.display="block"; document.getElementById("expenseSection").style.display="none";
+
+document.getElementById("weeklyHelperSection").style.display="block"; switchFormElementsVisibility();
+
+});
+
+
+
+document.getElementById("typeExpenseBtn").addEventListener("click", () => {
+
+currentType = "expense"; document.getElementById("typeExpenseBtn").className = "btn btn-cyber-danger w-100 py-2 active";
+
+document.getElementById("typeIncomeBtn").className = "btn btn-secondary w-100 py-2"; document.getElementById("typeIncomeBtn").style = "background:#cbd5e1; border:none; color:#334155;";
+
+document.getElementById("incomeSection").style.display="none"; document.getElementById("expenseSection").style.display="block";
+
+document.getElementById("weeklyHelperSection").style.display="none"; document.getElementById("amountCalcHint").innerText = "";
+
+switchFormElementsVisibility();
+
+});
+
+
+
+document.getElementById("saveTransactionBtn").addEventListener("click", () => {
+
+if (currentType === "income" && !isAuthorized) return;
+
+const amount = parseFloat(document.getElementById("transAmount").value);
+
+const note = document.getElementById("transNote").value.trim();
+
+if (isNaN(amount) || amount <= 0 || !note) return alert("กรุณากรอกข้อมูลให้ครบถ้วน!");
+
+
+
+let transaction = { id: Date.now(), type: currentType, amount: amount, note: note, timestamp: new Date().toLocaleString("th-TH") };
+
+
+
+if (currentType === "income") {
+
+const checkedBoxes = document.querySelectorAll(".student-checkbox:checked");
+
+transaction.paidStudents = Array.from(checkedBoxes).map(box => box.value);
+
+transaction.recipient = document.getElementById("recipientName").value.trim() || "หัวหน้าห้อง";
+
+} else {
+
+const runner = document.getElementById("withdrawerName").value.trim();
+
+if(!runner) return alert("กรุณาระบุชื่อผู้เบิกถอนเงิน!");
+
+transaction.withdrawer = runner;
+
+}
+
+
+
+appData.transactions.unshift(transaction);
+
+uploadToServer();
+
+
+
+document.getElementById("transAmount").value = ""; document.getElementById("transNote").value = "";
+
+document.getElementById("withdrawerName").value = ""; document.getElementById("amountCalcHint").innerText = "";
+
+alert("บันทึกลงฐานข้อมูลคลาวด์เรียบร้อย!");
+
+});
+
+
+
+window.showStudentHistory = function(studentName) {
+
+let paymentCount = 0; let totalPaid = 0;
+
+appData.transactions.forEach(t => {
+
+if(t.type === "income" && t.paidStudents && t.paidStudents.includes(studentName)) {
+
+paymentCount++; totalPaid += (t.amount / (t.paidStudents.length || 1));
+
+}
+
+});
+
+alert(`👤 เพื่อน: ${studentName}\n---------------------\n✅ ส่งเงินกองกลางแล้ว: ${paymentCount} ครั้ง\n💰 ยอดเงินร่วมสะสม: ${totalPaid.toFixed(2)} บาท`);
+
+};
+
+
+
+function renderChartVisual(income, expense) {
+
+const ctx = document.getElementById('financeChart').getContext('2d');
+
+if (myChart) myChart.destroy();
+
+myChart = new Chart(ctx, {
+
+type: 'bar',
+
+data: {
+
+labels: ['รายรับทั้งหมด', 'รายจ่ายทั้งหมด'],
+
+datasets: [{ label: 'บาท', data: [income, expense], backgroundColor: ['rgba(14, 165, 233, 0.7)', 'rgba(30, 58, 138, 0.7)'], borderColor: ['#0ea5e9', '#1e3a8a'], borderWidth: 2, borderRadius: 8 }]
+
+},
+
+options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+
+});
+
+}
+
+
+
+function init() {
+
+document.getElementById("displaySchool").innerText = appData.schoolName;
+
+document.getElementById("displayRoom").innerText = appData.roomName;
+
+document.getElementById("lblLeader").innerText = appData.leaderName || "-";
+
+document.getElementById("lblSubLeader").innerText = appData.subLeaderName || "-";
+
+
+document.getElementById("schoolInput").value = appData.schoolName;
+
+document.getElementById("roomInput").value = appData.roomName;
+
+document.getElementById("leaderInput").value = appData.leaderName || "";
+
+document.getElementById("subLeaderInput").value = appData.subLeaderName || "";
+
+document.getElementById("pinInput").value = appData.treasurerPIN;
+
+
+
+renderStudentsAndLists(); renderFinanceDashboard(); renderTransactions(); renderLatestCollectionStatus(); updateAccessUI();
+
+}
+
+
+
+function renderStudentsAndLists() {
+
+const container = document.getElementById("studentListContainer");
+
+const checkContainer = document.getElementById("whoPaidCheckboxes");
+
+container.innerHTML = ""; checkContainer.innerHTML = "";
+
+
+appData.students.forEach((student, index) => {
+
+const item = document.createElement("div");
+
+item.className = "d-flex justify-content-between align-items-center mb-2 p-2 list-group-item-cyber shadow-sm";
+
+item.innerHTML = `
+
+<span style="font-size:0.85rem; width:70%; font-weight:500; cursor:pointer;" class="text-dark"><i class="fa-solid fa-user me-2 text-primary"></i>${student}</span>
+
+<div class="btn-group gap-1">
+
+<button class="btn btn-sm btn-outline-info border-0 p-1 px-2 edit-stud-btn" title="แก้ไขชื่อเพื่อน"><i class="fa-solid fa-user-pen"></i></button>
+
+<button class="btn btn-sm text-danger border-0 p-1 del-stud-btn" title="ลบชื่อออก"><i class="fa-solid fa-circle-minus"></i></button>
+
+</div>`;
+
+
+item.querySelector('.text-dark').addEventListener('click', () => showStudentHistory(student));
+
+const editBtn = item.querySelector('.edit-stud-btn');
+
+const delBtn = item.querySelector('.del-stud-btn');
+
+editBtn.disabled = !isAuthorized;
+
+delBtn.disabled = !isAuthorized;
+
+editBtn.addEventListener('click', () => editStudentName(index));
+
+delBtn.addEventListener('click', () => deleteStudent(index));
+
+container.appendChild(item);
+
+
+
+const wrap = document.createElement("div"); wrap.className = "form-check mb-1";
+
+wrap.innerHTML = `<input class="form-check-input student-checkbox" type="checkbox" value="${student}" id="check_${index}"><label class="form-check-label text-truncate text-dark" style="font-size:0.85rem; max-width:90%;" for="check_${index}">${student}</label>`;
+
+wrap.querySelector('.student-checkbox').addEventListener('change', applyWeeklyRate);
+
+checkContainer.appendChild(wrap);
+
+});
+
+}
+
+
+
+function renderFinanceDashboard() {
+
+let inc = 0, exp = 0;
+
+appData.transactions.forEach(t => t.type === "income" ? inc+=t.amount : exp+=t.amount);
+
+let bal = inc - exp;
+
+document.getElementById("totalBalance").innerText = `${bal.toLocaleString(undefined, {minimumFractionDigits:2})} ฿`;
+
+document.getElementById("totalIncome").innerText = `${inc.toLocaleString(undefined, {minimumFractionDigits:2})} ฿`;
+
+document.getElementById("totalExpense").innerText = `${exp.toLocaleString(undefined, {minimumFractionDigits:2})} ฿`;
+
+renderChartVisual(inc, exp);
+
+}
+
+
+
+function renderTransactions() {
+
+const list = document.getElementById("transactionHistoryList"); list.innerHTML = "";
+
+if(appData.transactions.length === 0) { list.innerHTML = `<p class="text-muted text-center py-3 small">ยังไม่มีรายการเงินในระบบออนไลน์</p>`; return; }
+
+
+appData.transactions.forEach(t => {
+
+const div = document.createElement("div"); div.className = `glass-panel p-3 mb-3 border-start border-4 border-${t.type==='income'?'info':'danger'}`; div.style.background = "#ffffff";
+
+if(t.type === 'income') {
+
+div.innerHTML = `<div class="d-flex justify-content-between"><div><span class="badge bg-info text-white mb-2">รายรับ</span><h5 class="fw-bold mb-1 text-dark">${t.note}</h5><small class="text-muted d-block">${t.timestamp} | ผู้รับ: ${t.recipient}</small></div><div class="text-end"><h4 class="fw-bold text-primary">+${t.amount.toLocaleString()} ฿</h4><button class="btn btn-sm text-danger border-0 mt-2 del-trans-btn" ${!isAuthorized ? 'disabled':''}><i class="fa-solid fa-trash-can"></i></button></div></div>`;
+
+} else {
+
+div.innerHTML = `<div class="d-flex justify-content-between"><div><span class="badge bg-danger text-white mb-2">รายจ่าย</span><h5 class="fw-bold mb-1 text-dark">${t.note}</h5><small class="text-muted d-block">${t.timestamp} | ผู้เบิก: ${t.withdrawer}</small></div><div class="text-end"><h4 class="fw-bold text-danger">-${t.amount.toLocaleString()} ฿</h4><button class="btn btn-sm text-danger border-0 mt-2 del-trans-btn" ${!isAuthorized ? 'disabled':''}><i class="fa-solid fa-trash-can"></i></button></div></div>`;
+
+}
+
+div.querySelector('.del-trans-btn').addEventListener('click', () => deleteTransaction(t.id));
+
+list.appendChild(div);
+
+});
+
+}
+
+
+
+function renderLatestCollectionStatus() {
+
+const paidList = document.getElementById("paidStatusList"); paidList.innerHTML = "";
+
+const unpaidList = document.getElementById("unpaidStatusList"); unpaidList.innerHTML = "";
+
+const latest = appData.transactions.find(t => t.type === "income");
+
+if(!latest) return document.getElementById("latestReceiptLabel").innerHTML = "ยังไม่มีข้อมูลเก็บเงินคลัง";
+
+
+document.getElementById("latestReceiptLabel").innerHTML = `รอบบิลล่าสุด: <strong class="text-primary">${latest.note}</strong>`;
+
+const paidSet = new Set(latest.paidStudents);
+
+appData.students.forEach(s => {
+
+const li = document.createElement("li"); li.className = "list-group-item d-flex justify-content-between mb-2 py-1 border-0 rounded small shadow-sm"; li.style.background = "#f8fafc";
+
+if(paidSet.has(s)) {
+
+li.innerHTML = `<span class="text-success text-truncate" style="font-size:0.8rem;"><i class="fa-solid fa-square-check me-1"></i>${s}</span>`; paidList.appendChild(li);
+
+} else {
+
+li.innerHTML = `<span class="text-danger text-truncate" style="font-size:0.8rem;"><i class="fa-solid fa-square-xmark me-1"></i>${s}</span>`; unpaidList.appendChild(li);
+
+}
+
+});
+
+}
+
+
+
+document.getElementById("addStudentBtn").addEventListener("click", () => {
+
+const n = document.getElementById("studentNameInput").value.trim();
+
+if(n) { appData.students.push(n); document.getElementById("studentNameInput").value=""; uploadToServer(); }
+
+});
+
+
+
+document.getElementById("saveConfigBtn").addEventListener("click", () => {
+
+appData.schoolName = document.getElementById("schoolInput").value.trim() || "โรงเรียนสายธารวิทยา";
+
+appData.roomName = document.getElementById("roomInput").value.trim() || "ม.2/1";
+
+appData.leaderName = document.getElementById("leaderInput").value.trim();
+
+appData.subLeaderName = document.getElementById("subLeaderInput").value.trim();
+
+const newPin = document.getElementById("pinInput").value.trim();
+
+if(newPin.length === 4) appData.treasurerPIN = newPin;
+
+uploadToServer();
+
+bootstrap.Modal.getInstance(document.getElementById('configModal')).hide();
+
+});
+
+
+
+document.getElementById("clearAllTransBtn").addEventListener("click", () => {
+
+if(confirm("⚠️ ต้องการล้างบัญชีเริ่มต้นใหม่เป็น 0 บนคลาวด์ออนไลน์ใช่หรือไม่?")) { appData.transactions = []; uploadToServer(); }
+
+});
+
+</script>
+
+</body>
+
+</html> 
+
